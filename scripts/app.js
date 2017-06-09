@@ -65,14 +65,9 @@ APP.Main = (function() {
 
     // This seems odd. Surely we could just select the story
     // directly rather than looping through all of them.
-    var storyElements = document.querySelectorAll('.story');
-
-    for (var i = 0; i < storyElements.length; i++) {
-
-      if (storyElements[i].getAttribute('id') === 's-' + key) {
+        var story = document.querySelector('.story#s-' + key);
 
         details.time *= 1000;
-        var story = storyElements[i];
         var html = storyTemplate(details);
         story.innerHTML = html;
         story.addEventListener('click', onStoryClick.bind(this, details));
@@ -81,12 +76,10 @@ APP.Main = (function() {
         // Tick down. When zero we can batch in the next load.
         storyLoadCount--;
 
-      }
-    }
-
     // Colorize on complete.
     if (storyLoadCount === 0)
       colorizeAndScaleStories();
+
   }
 
   function onStoryClick(details) {
@@ -204,7 +197,7 @@ APP.Main = (function() {
     // every few milliseconds. That's going to keep
     // it all tight. Or maybe we're doing visual changes
     // and they should be in a requestAnimationFrame
-    setTimeout(animate, 4);
+    requestAnimationFrame(animate);
   }
 
   function hideStory(id) {
@@ -285,15 +278,6 @@ APP.Main = (function() {
     }
   }
 
-  main.addEventListener('touchstart', function(evt) {
-
-    // I just wanted to test what happens if touchstart
-    // gets canceled. Hope it doesn't block scrolling on mobiles...
-    if (Math.random() > 0.97) {
-      evt.preventDefault();
-    }
-
-  });
 
   main.addEventListener('scroll', function() {
 
